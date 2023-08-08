@@ -1,0 +1,13 @@
+---
+const {name, opcode, respType, resp, respLen} = Astro.props
+const headerID = name + "-command"
+---
+
+<div id={headerID} class="font-body text-white">
+    <h3 class="font-display text-xl pt-4">{name}</h3>
+
+    <p class="pt-2 pl-4">Opcode: <code>{opcode}</code></p>
+    <p class="pt-2 pl-4">Response ({respType}, {respLen} bytes): {resp}</p>
+
+    <slot />
+</div>

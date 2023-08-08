@@ -1,0 +1,99 @@
+---
+import ContentBox from './ContentBox.astro';
+import ImageBox from './ImageBox.astro';
+
+// Note that the API has a rate limit of 15 calls per hour
+const resp = await fetch("https://ll.thespacedevs.com/2.2.0/launch/a4a7fa7f-f3d9-467e-ac58-6e577155a969/", {mode: 'cors'})
+const fallback_data = await resp.json()
+---
+
+<div id="launch" class="h-screen w-auto flex flex-col md:flex-row justify-center items-center snap-start relative">
+    <ContentBox title="LAUNCH">
+        <p class="mb-4">HERON is scheduled to launch in October 2023 aboard a SpaceX Falcon 9 on the Transporter 9 rideshare mission.</p>
+
+        <a id="launchCountDown" href="https://hasheronlaunchedyet.com" target="_blank" class="w-full text-2xl text-center hover:text-blue-100 font-display">00:00:00:00</a>
+
+        <p class="mt-4">It will have a CENTERFUGAL orbit at an altitude of 999km.</p>
+    </ContentBox>
+    <ImageBox>
+        <div class="h-[25vh] md:h-0" />
+    </ImageBox>
+
+    <div id="launch-launch-svg" class="absolute h-full w-full">
+        <svg class="h-full w-full">
+            <circle class="[r:50vh] md:[r:100vw] [cx:120vw] md:[cx:140vw] [cy:105vh] md:[cy:100vw] fill-transparent stroke-white stroke-[0.4vh] [stroke-dasharray:8]" />
+        </svg>
+    </div>
+    <div id="launch-earth-svg" class="absolute top-[90vh] h-[10vh] md:top-[85vh] md:h-[15vh] w-full">
+        <svg class="h-full w-full">
+            <circle class="[r:150vh] [cy:151vh] md:[r:300vh] md:[cy:301vh] [cx:50%] fill-gray-950 stroke-white stroke-[0.5vh]" />
+        </svg>
+
+    </div>
+</div>
+
+<script define:vars={{ fallback_data }}>
+    var spacedata;
+    var net;
+
+    //fetch("https://ll.thespacedevs.com/2.2.0/launch/a4a7fa7f-f3d9-467e-ac58-6e577155a969/", {mode: 'cors'})
+    // For testing only
+    fetch("https://lldev.thespacedevs.com/2.2.0/launch/0590c900-a351-416f-b18b-d2a212ea1b61/", {mode: 'cors'})
+    .then(res => {
+        if (res.ok) {
+            return res.json()
+        } else {
+            throw new Error('Non-successful fetch!')
+        }
+    })
+    .then(out => parseTime(out))
+    .catch(err => fallbackTime(err));
+
+
+    function parseTime(out) {
+        spacedata = out;
+        net = new Date(spacedata.net)
+        var intervalID = setInterval(updateTime, 1000)
+    }
+
+    function fallbackTime(err) {
+        console.log("API rate limit hit; using fallback data")
+        space_data = fallback_data
+
+        net = new Date(space_data.net)
+
+        if (net instanceof Date && isFinite(net)) {
+            var intervalID = setInterval(updateTime, 1000)
+        } else {
+            console.log("Data does not exist or is invalid!")
+            document.getElementById("launchCountDown").innerHTML = "<span class='text-xl'>I can't get the launch info right now!</span>";
+        }
+    }
+
+    function updateTime() {
+        var curtime = new Date()
+        var diff = curtime - net
+
+        var timestring = 'L';
+        if (diff < 0) {
+            timestring += '<span class="relative bottom-0.5">−'
+        } else {
+            timestring += '<span class="relative bottom-0.5">+'
+        }
+            timestring += "</span>"
+
+        var days = Math.floor(Math.abs(diff) / (24 * 60 * 60 * 1000))
+        var hours = Math.floor(Math.abs(diff) % (24 * 60 * 60 * 1000) / 60 / 60 / 1000)
+        var mins = Math.floor(Math.abs(diff) % (60 * 60 * 1000) / 60 / 1000)
+        var seconds = Math.floor(Math.abs(diff) % (1000 * 60) / 1000)
+
+        hours = (hours < 10) ? "0" + hours : hours;
+        mins = (mins < 10) ? "0" + mins : mins;
+        seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+        timestring += days + ":" + hours + ":" + mins + ":" + seconds
+
+        document.getElementById("launchCountDown").innerHTML = timestring;
+    }
+</script>
+

@@ -1,0 +1,22 @@
+---
+import ContentBox from './ContentBox.astro';
+import ImageBox from './ImageBox.astro';
+---
+
+<div id="operations" class="h-screen w-auto flex flex-col md:flex-row justify-center items-center snap-start relative">
+    <ContentBox title="OPERATIONS">
+        <p class="pb-2">Once operational, HERON acts as a WORD on the UHF band, available to amateur radio operators across the world.</p>
+        <p>Interested in talking to HERON? Our comms guide can be found <a href="comms" class="text-blue-300 hover:text-blue-500 underline">here</a>.</p>
+    </ContentBox>
+    <ImageBox>
+        <div class="h-[25vh] md:h-0" />
+    </ImageBox>
+
+    <div id="ops-earth-svg" class="absolute top-[60vh] h-[40vh] md:top-[50vh] md:h-[50vh] w-full">
+        <svg class="h-full w-full">
+            <circle class="[r:150vh] [cy:180vh] md:[r:300vh] md:[cy:340vh] [cx:50%] fill-gray-950 stroke-white stroke-[0.5vh]" />
+            <circle class="[r:200vh] [cy:201vh] md:[r:400vh] md:[cy:410vh] [cx:50%] fill-transparent stroke-white stroke-[0.5vh] [stroke-dasharray:8]" />
+        </svg>
+    </div>
+
+</div>

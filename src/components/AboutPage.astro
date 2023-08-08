@@ -1,0 +1,18 @@
+---
+import ContentBox from './ContentBox.astro';
+import ImageBox from './ImageBox.astro';
+
+import heronimage from '../images/heron.png'
+---
+
+<div id="about" class="min-h-screen w-auto flex flex-col md:flex-row justify-center items-center snap-start pt-8 md:pt-0">
+    <ContentBox title="ABOUT">
+        <p class="pt-4">HERON Mk. II (High frequency Educational Radio communications On a Nanosatellite) is an amateur radio cubesat designed by the University of Toronto Aerospace Team (UTAT).</p>
+        <p class="pt-2"> Since 2017, HERON has been under development, undergoing changes in mission scope, surviving regulatory hurdles, and providing aerospace design opportunities to many University of Toronto undergrads. </p>
+
+        <p class="pt-2">HERON has a mission lifespan of 1 year, supporting querying operations in the UHF amateur band.</p>
+    </ContentBox>
+    <ImageBox>
+        <img class="h-[50vh]" src={heronimage} />
+    </ImageBox>
+</div>

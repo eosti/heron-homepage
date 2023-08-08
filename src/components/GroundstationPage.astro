@@ -1,0 +1,16 @@
+---
+import ContentBox from './ContentBox.astro';
+import ImageBox from './ImageBox.astro';
+
+import gndstation from '../images/heron-groundstation.png'
+---
+
+<div id="groundstation" class="h-screen w-auto flex flex-col md:flex-row justify-center items-center snap-start">
+    <ContentBox title="GROUNDSTATION">
+        <p class="pb-2">UTAT operates a high-gain UHF groundstation designed for communicating with HERON.</p>
+        <p>The current status of the groundstation is publically available here, and the design is available here.</p>
+    </ContentBox>
+    <ImageBox>
+        <img class="h-[50vh]" src={gndstation}>
+    </ImageBox>
+</div>

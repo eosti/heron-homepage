@@ -1,0 +1,21 @@
+---
+import ContentBox from './ContentBox.astro';
+import ImageBox from './ImageBox.astro';
+
+import { Icon } from 'astro-icon'
+---
+
+<div id="learn" class="h-screen w-auto flex flex-col md:flex-row justify-center items-center snap-start">
+    <ContentBox title="LEARN MORE">
+        <p class="mt-2"><a class="text-blue-300 hover:text-blue-500 underline" href="https://www.utat.ca/">UTAT Homepage</a></p>
+        <p class="mt-2"><a class="text-blue-300 hover:text-blue-500 underline" href="https://www.utat.ca/space-systems">UTAT Space Systems</a></p>
+        <div class="flex flex-row w-auto h-auto mt-4">
+            <a class="h-8 w-8 mr-4" href="https://github.com/utat-ss" target="_blank"><Icon class="text-white" name="mdi:github" /></a>
+            <a class="h-8 w-8" href="https://www.instagram.com/uoft_aerospaceteam/" target="_blank"><Icon name="mdi:instagram" /></a>
+            <a class="h-8 w-8 ml-4" href="mailto:spacesys@utat.ca" target="_blank"><Icon name="mdi:email" /></a>
+
+    </ContentBox>
+    <ImageBox>
+        <svg />
+    </ImageBox>
+</div>

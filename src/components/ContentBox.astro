@@ -1,0 +1,9 @@
+---
+const {title} = Astro.props
+---
+<div id="content-box" class="text-white mx:w-1/2 mx-[10vw] md:mx-[10vw] z-50 bg-gray-950">
+    <h2 class="font-display text-center md:text-left text-3xl mb-4 w-full">{title}</h2>
+    <div class="font-body text-l w-full">
+        <slot />
+    </div>
+</div>

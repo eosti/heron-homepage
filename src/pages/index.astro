@@ -1,15 +1,22 @@
 ---
----
+import PageLayout from '../components/PageLayout.astro';
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+import TitlePage from '../components/TitlePage.astro';
+import AboutPage from '../components/AboutPage.astro';
+import LaunchPage from '../components/LaunchPage.astro';
+import DeploymentPage from '../components/DeploymentPage.astro';
+import OpsPage from '../components/OpsPage.astro';
+import GroundstationPage from '../components/GroundstationPage.astro';
+import LearnPage from '../components/LearnPage.astro';
+---
+<PageLayout title="Heron Mk. II">
+        <div class="snap-y snap-mandatory h-screen overflow-y-scroll w-full">
+            <TitlePage />
+            <AboutPage />
+            <LaunchPage />
+            <DeploymentPage />
+            <OpsPage />
+            <GroundstationPage />
+            <LearnPage />
+        </div>
+</PageLayout>
