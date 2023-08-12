@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@font-face {
+    font-family: 'Routed Gothic';
+    src: url('/fonts/routed-gothic.ttf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@layer base {
+    a {
+        @apply underline hover:text-blue-300 hover:transition hover:duration-300;
+    }
+}
+

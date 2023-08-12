@@ -2,7 +2,7 @@
 import ContentBox from './ContentBox.astro';
 import ImageBox from './ImageBox.astro';
 
-import heronimage from '../images/heron.png'
+import heronimage from '../images/heron-sm.png'
 ---
 
 <div id="about" class="min-h-screen w-auto flex flex-col md:flex-row justify-center items-center snap-start pt-8 md:pt-0">
@@ -13,6 +13,6 @@ import heronimage from '../images/heron.png'
         <p class="pt-2">HERON has a mission lifespan of 1 year, supporting querying operations in the UHF amateur band.</p>
     </ContentBox>
     <ImageBox>
-        <img class="h-[50vh]" src={heronimage} />
+        <img class="w-auto invert" src={heronimage} />
     </ImageBox>
 </div>

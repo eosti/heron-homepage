@@ -2,7 +2,7 @@
 import ContentBox from './ContentBox.astro';
 import ImageBox from './ImageBox.astro';
 
-import gndstation from '../images/heron-groundstation.png'
+import gndstation from '../images/gndstation-sm.png'
 ---
 
 <div id="groundstation" class="h-screen w-auto flex flex-col md:flex-row justify-center items-center snap-start">
@@ -11,6 +11,6 @@ import gndstation from '../images/heron-groundstation.png'
         <p>The current status of the groundstation is publically available here, and the design is available here.</p>
     </ContentBox>
     <ImageBox>
-        <img class="h-[50vh]" src={gndstation}>
+        <img class="w-auto invert" src={gndstation}>
     </ImageBox>
 </div>
