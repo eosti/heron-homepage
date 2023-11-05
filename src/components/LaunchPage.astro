@@ -13,7 +13,7 @@ const fallback_data = await resp.json()
 
         <a id="launchCountDown" href="https://hasheronlaunchedyet.com" target="_blank" class="text-2xl text-center hover:text-blue-200 no-underline font-display">00:00:00:00</a>
 
-        <p class="mt-4">It will be in Low Earth Orbit at an altitude of 999km.</p>
+        <p class="mt-4">It will be in sun-synchonous, low earth orbit at an altitude of 550km.</p>
     </ContentBox>
     <ImageBox>
         <div class="h-[25vh] md:h-0" />
@@ -35,10 +35,11 @@ const fallback_data = await resp.json()
 <script define:vars={{ fallback_data }}>
     var spacedata;
     var net;
+    var intervalID;
 
-    //fetch("https://ll.thespacedevs.com/2.2.0/launch/a4a7fa7f-f3d9-467e-ac58-6e577155a969/", {mode: 'cors'})
+    fetch("https://ll.thespacedevs.com/2.2.0/launch/a4a7fa7f-f3d9-467e-ac58-6e577155a969/", {mode: 'cors'})
     // For testing only
-    fetch("https://lldev.thespacedevs.com/2.2.0/launch/0590c900-a351-416f-b18b-d2a212ea1b61/", {mode: 'cors'})
+    // fetch("https://lldev.thespacedevs.com/2.2.0/launch/0590c900-a351-416f-b18b-d2a212ea1b61/", {mode: 'cors'})
     .then(res => {
         if (res.ok) {
             return res.json()
@@ -53,17 +54,17 @@ const fallback_data = await resp.json()
     function parseTime(out) {
         spacedata = out;
         net = new Date(spacedata.net)
-        var intervalID = setInterval(updateTime, 1000)
+        intervalID = setInterval(updateTime, 1000)
     }
 
     function fallbackTime(err) {
         console.log("API rate limit hit; using fallback data")
-        space_data = fallback_data
+        spacedata = fallback_data
 
-        net = new Date(space_data.net)
+        net = new Date(spacedata.net)
 
         if (net instanceof Date && isFinite(net)) {
-            var intervalID = setInterval(updateTime, 1000)
+            intervalID = setInterval(updateTime, 1000)
         } else {
             console.log("Data does not exist or is invalid!")
             document.getElementById("launchCountDown").innerHTML = "<span class='text-xl'>I can't get the launch info right now!</span>";
