@@ -1,0 +1,161 @@
+---
+import PageLayout from '../components/PageLayout.astro';
+import SatelliteCommand from '../components/SatelliteCommand.astro'
+import SatelliteCommandEntry from '../components/SatelliteCommandEntry.astro'
+import TableByteField from '../components/TableByteField.astro'
+import Footer from '../components/Footer.astro'
+---
+
+<PageLayout title="Communicating with HERON">
+    <div class="h-full min-h-screen w-auto flex flex-col items-center">
+        <div class="pt-8 text-white font-body w-[80vw] md:w-[50vw]">
+            <h1 class="font-display text-6xl text-center">HERON COMMS</h1>
+            <p class="pt-8">
+                HERON is designed to be a satellite for amateur radio operators to communicate to. 
+                As such, we provide the protocols, formats, and frequencies for anyone to do so.
+            </p>
+            <p class="pt-2">Please note: in order to transmit, you <b>must</b> have a valid amateur radio license in the country that you are operating in that allows for digital communication in the 70cm band.</p>
+            <p class="pt-2">If you run into any issues or want more information concerning the commands and command structure, feel free to <a href="mailto:spacesys@utat.ca" target="_blank" >contact us</a>.</p>
+
+            <h2 class="font-display text-3xl pt-8">FREQUENCY AND MODE</h2>
+            <p class="pt-4">
+                HERON operates on the frequency <b>437.120MHz</b> with a bandwidth of 14.4kHz. 
+                The link is half-duplex, so both uplink and downlink occur on this frequency. 
+            </p>
+            <p class="pt-2">
+                HERON uses 2GFSK modulation at a baud rate of 9600. 
+            </p>
+
+            <h2 class="font-display text-3xl pt-8" id="PACKET-FORMAT">PACKET FORMAT</h2>
+            <p>
+                HERON uses a mission-specific packet protocol encapsulated inside the EnduroSat ESTTC protocol.
+                This section will describe both the necessary parts of the ESTTC protocol as well as the HERON-specific packet structure.
+            </p>
+
+            <h3 class="font-display text-xl pt-4" id="ESTTC-PACKET">ESTTC PACKET</h3>
+            todo
+
+            <h3 class="font-display text-xl pt-4" id="ENCODED-PACKET">ENCODED PACKET</h3>
+            <div class="w-full overflow-x-scroll">
+                <table class="mx-auto mt-4 table-fixed">
+                    <tr>
+                        <TableByteField start="0" end="" />
+                        <TableByteField start="1" end="" />
+                        <TableByteField start="2" end="" />
+                        <TableByteField start="3" end="(N-7)" />
+                        <TableByteField start="(N-6)" end="" />
+                        <TableByteField start="(N-5)" end="(N-2)" />
+                        <TableByteField start="(N-1)" end="" />
+                    </tr>
+                    <tr>
+                        <th class="border-2 px-2 py-1 border-white">0x55 (Delimiter)</th>
+                        <th class="border-2 px-2 py-1 border-white">Length (equal to N-9)</th>
+                        <th class="border-2 px-2 py-1 border-white">0x55 (Delimiter)</th>
+                        <th class="border-2 px-2 py-1 border-white">Decoded Packet</th>
+                        <th class="border-2 px-2 py-1 border-white">0x55 (Delimiter)</th>
+                        <th class="border-2 px-2 py-1 border-white">CRC32 of length + decoded packet</th>
+                        <th class="border-2 px-2 border-white">0x55 (Delimiter)</th>
+                    </tr>
+                </table>
+            </div>
+            
+            <h3 class="font-display text-xl pt-4">DECODED REQUEST PACKET</h3>
+            <p class="mt-4">The Command ID is a unique 16-bit sequence number with MSB of 0 and must be greater than the previous Command ID. If any of the requirements are unmet, the command will not be executed.</p>
+            <p class="mt-4">The Command ID can be reset to 0 (i.e next valid command ID is 1) by sending a request packet with Command ID 0 and any opcode. This may be done at the beginning of a pass to set the Command ID to a known state.</p>
+            <p class="mt-4">This value can be used to determine if a packet was not recieved by HERON, or if the response by HERON was not recieved by the groundstation.</p>
+
+            <table class="mx-auto mt-4 table-fixed">
+                <tr>
+                    <TableByteField start="0" end="1" />
+                    <TableByteField start="2" end="" />
+                </tr>
+                <tr>
+                    <th class="border-2 px-2 border-white">Command ID</th>
+                    <th class="border-2 px-2 border-white">Opcode</th>
+                </tr>
+            </table>
+
+            <h3 class="font-display text-xl pt-4">DECODED ACK PACKET</h3>
+            <table class="mx-auto mt-4 table-fixed">
+                <tr>
+                    <TableByteField start="0" end="1" />
+                    <TableByteField start="2" end="" />
+                </tr>
+                <tr>
+                    <th class="border-2 px-2 border-white">Command ID</th>
+                    <th class="border-2 px-2 border-white">ACK Status</th>
+                </tr>
+            </table>
+
+            <table class="mx-auto mt-8">
+                <SatelliteCommandEntry bytes="ACK Status" data="Meaning" />
+                <SatelliteCommandEntry bytes="0x00" data="OK" />
+                <SatelliteCommandEntry bytes="0x01" data="Reset current Command ID" />
+                <SatelliteCommandEntry bytes="0x02" data="Invalid encoded format" />
+                <SatelliteCommandEntry bytes="0x03" data="Invalid length" />
+                <SatelliteCommandEntry bytes="0x04" data="Invalid checksum" />
+                <SatelliteCommandEntry bytes="0x05" data="Invalid decoded format" />
+                <SatelliteCommandEntry bytes="0x06" data="Invalid command ID" />
+                <SatelliteCommandEntry bytes="0x07" data="Decremented command ID" />
+                <SatelliteCommandEntry bytes="0x08" data="Repeated command ID" />
+                <SatelliteCommandEntry bytes="0x09" data="Invalid opcode" />
+                <SatelliteCommandEntry bytes="0x0B" data="Full command queue" />
+            </table>
+
+            <h3 class="font-display text-xl pt-4">DECODED RESPONSE PACKET</h3>
+            <table class="mx-auto mt-4 table-fixed">
+                <tr>
+                    <TableByteField start="0" end="1" />
+                    <TableByteField start="2" end="" />
+                    <TableByteField start="3" end="(N-1)" />
+                </tr>
+                <tr>
+                    <th class="border-2 px-2 border-white">Command ID | (0x1 << 15)</th>
+                    <th class="border-2 px-2 border-white">Response Status</th>
+                    <th class="border-2 px-2 border-white">Data (length depends on opcode)</th>
+                </tr>
+            </table>
+
+            <table class="mx-auto mt-8">
+                <SatelliteCommandEntry bytes="Response Status" data="Meaning" />
+                <SatelliteCommandEntry bytes="0x00" data="OK" />
+                <SatelliteCommandEntry bytes="0x02" data="Timed Out" />
+                <SatelliteCommandEntry bytes="0xFF" data="Unknown failure" />
+            </table>
+
+            <h2 class="font-display text-3xl pt-8">COMMANDS</h2>
+
+            <SatelliteCommand name="PING" opcode="0x00" respType="ACK" resp="n/a" respLen="0" />
+
+            <SatelliteCommand name="GET TIME" opcode="0x01" respType="RESPONSE" resp="RTC date and time" respLen="6">
+                <table class="mx-auto mt-4">
+                    <SatelliteCommandEntry bytes="Bytes" data="Data" />
+                    <SatelliteCommandEntry bytes="0:2" data="RTC Date" />
+                    <SatelliteCommandEntry bytes="3:5" data="RTC Time" />
+                </table>
+            </SatelliteCommand>
+
+            <SatelliteCommand name="GET STATUS" opcode="0x13" respType="RESPONSE" resp="Uptime, restart count and reason for each subsystem" respLen="33">
+                <table class="mx-auto mt-4">
+                    <SatelliteCommandEntry bytes="Bytes" data="Data" />
+                    <SatelliteCommandEntry bytes="0:2" data="OBC Uptime" />
+                    <SatelliteCommandEntry bytes="3:5" data="OBC Restart Count" />
+                    <SatelliteCommandEntry bytes="6:8" data="OBC Restart Reason" />
+                    <SatelliteCommandEntry bytes="9:11" data="OBC Restart Date" />
+                    <SatelliteCommandEntry bytes="12:14" data="OBC Restart Time" />
+                    <SatelliteCommandEntry bytes="15:17" data="EPS Uptime" />
+                    <SatelliteCommandEntry bytes="18:20" data="EPS Restart Count" />
+                    <SatelliteCommandEntry bytes="21:23" data="EPS Restart Reason" />
+                    <SatelliteCommandEntry bytes="24:26" data="PAY Uptime" />
+                    <SatelliteCommandEntry bytes="27:29" data="PAY Restart Count" />
+                    <SatelliteCommandEntry bytes="30:32" data="PAY Restart Reason" />
+                </table>
+            </SatelliteCommand>
+
+            <h2 class="font-display text-3xl pt-8">DECODER</h2>
+            <p class="pt-4">UTAT has made a series of scripts designed to be integrated with GNURadio to facilitate encoding, decoding, and comprehending packets. The code can be found <a href="https://github.com/utat-ss/HERON-ground-station" target="_blank">on the UTAT GitHub</a>.</p>
+
+        </div>
+    </div>
+    <Footer />
+</PageLayout>

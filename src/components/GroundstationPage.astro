@@ -3,12 +3,15 @@ import ContentBox from './ContentBox.astro';
 import ImageBox from './ImageBox.astro';
 
 import gndstation from '../images/gndstation-sm.png'
+
+// <p>The current status of the groundstation is publicly available <a href="blackhole" target="_blank">here</a>, and the design is available <a href="https://www.notion.so/utat-ss/HERON-Operations-aa727ae93a944f7bb7c9d3909eddd5e3?pvs=4" target="_blank">here</a>.</p>
 ---
 
 <div id="groundstation" class="h-screen w-auto flex flex-col md:flex-row justify-center items-center snap-start">
     <ContentBox title="GROUNDSTATION">
         <p class="pb-2">UTAT operates a high-gain UHF groundstation designed for communicating with HERON.</p>
-        <p>The current status of the groundstation is publically available <a href="blackhole" target="_blank">here</a>, and the design is available <a href="https://www.notion.so/utat-ss/HERON-Operations-aa727ae93a944f7bb7c9d3909eddd5e3?pvs=4" target="_blank">here</a>.</p>
+        <p>The groundstation is installed on the rooftop of the Bahen Centre on the UofT campus in downtown Toronto. 
+        <p>The design of the groundstation is available <a href="https://www.notion.so/utat-ss/HERON-Operations-aa727ae93a944f7bb7c9d3909eddd5e3?pvs=4" target="_blank">here</a> and the current status will be publicly available at a later date.
     </ContentBox>
     <ImageBox>
         <img class="w-auto invert" src={gndstation}>
